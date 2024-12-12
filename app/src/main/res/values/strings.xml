@@ -80,4 +80,9 @@
     <string name="embank">region:</string>
     <string name="rfid_not_init">rfid not initialized.</string>
     <string name="mask_list">mask list:</string>
+
+    <string name="web_invisible">web隐藏</string>
+    <string name="web_visible">web显示</string>
+    <string name="web_refresh">web刷新</string>
+    <string name="web_settings">web设置</string>
 </resources>

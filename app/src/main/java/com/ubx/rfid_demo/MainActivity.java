@@ -1,5 +1,6 @@
 package com.ubx.rfid_demo;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -89,7 +90,10 @@ public class MainActivity extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true); // Enable JavaScript
         webView.addJavascriptInterface(new WebAppInterface(this), "AndroidEpc");
 
-        webView.loadUrl("192.168.0.2:8083"); // Load your desired URL
+        SharedPreferences sharedPreferences = getSharedPreferences("WebViewPrefs", MODE_PRIVATE);
+        String defaultUrl = sharedPreferences.getString("defaultUrl", "http://192.168.0.2:8082");
+
+        webView.loadUrl(defaultUrl); // Load your desired URL
         webView.setVisibility(View.INVISIBLE); // Make WebView visible
 
     }
@@ -252,20 +256,27 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.action_6b:
-                Intent intent = new Intent(MainActivity.this, Activity6BTag.class);
-                startActivity(intent);
-                break;
 
+            case R.id.action_invisible:
+                webView.setVisibility(View.INVISIBLE);
+                return true;
+            case R.id.action_visible:
+                webView.setVisibility(View.VISIBLE);
+                return true;
             case R.id.action_refresh:
                 if (webView != null) {
                     webView.reload(); // 刷新 WebView
                 }
                 return true;
+            case R.id.action_web_setting:
+//                Intent intent = new Intent(this, AdminActivity.class);
+//                startActivityForResult(intent, REQUEST_CODE_ADMIN);
+//                return true;
         }
         return super.onOptionsItemSelected(item);
     }

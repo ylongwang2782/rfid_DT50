@@ -1,18 +1,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.urovo.barcodescanner.activity.RateScanActivity">
+    tools:context="com.example.readerdemouhf.MainActivity" >
 
     <item
-        android:id="@+id/action_6b"
+        android:id="@+id/action_invisible"
+        android:title="@string/web_invisible"
         android:orderInCategory="100"
-        android:title="@string/_6b_tag_activity"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/action_visible"
+        android:title="@string/web_visible"
+        android:orderInCategory="101"
         app:showAsAction="never" />
-
     <item
         android:id="@+id/action_refresh"
-        android:orderInCategory="101"
-        android:title="刷新"
+        android:title="@string/web_refresh"
+        android:orderInCategory="102"
         app:showAsAction="never" />
-
+    <item
+        android:id="@+id/action_web_setting"
+        android:title="@string/web_settings"
+        android:orderInCategory="103"
+        app:showAsAction="never" />
 </menu>
