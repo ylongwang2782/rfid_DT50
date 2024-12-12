@@ -289,10 +289,10 @@ public class MainActivity extends AppCompatActivity {
         // Log.d("BackOndestory","onActivityResult");
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ADMIN && resultCode == RESULT_OK && data != null) {
-//            String newUrl = data.getStringExtra("newUrl");
-//            if (newUrl != null) {
-//                webView.loadUrl(newUrl);
-//            }
+            String newUrl = data.getStringExtra("newUrl");
+            if (newUrl != null) {
+                webView.loadUrl(newUrl);
+            }
         }
     }
 
