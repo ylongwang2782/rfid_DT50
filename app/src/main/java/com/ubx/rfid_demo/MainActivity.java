@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @JavascriptInterface
-        public void startScan(){
+        public void startScan() {
             TagScanFragment fragment = (TagScanFragment) fragments.get(0);
             fragment.scanStartBtn.callOnClick();
         }
@@ -256,6 +256,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    // Creat a reques code admin
+    private static final int REQUEST_CODE_ADMIN = 1;
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -274,11 +277,24 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return true;
             case R.id.action_web_setting:
-//                Intent intent = new Intent(this, AdminActivity.class);
-//                startActivityForResult(intent, REQUEST_CODE_ADMIN);
-//                return true;
+                Intent intent = new Intent(this, AdminActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_ADMIN);
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // rewrite onActivityResult to recv data
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Log.d("BackOndestory","onActivityResult");
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_ADMIN && resultCode == RESULT_OK && data != null) {
+//            String newUrl = data.getStringExtra("newUrl");
+//            if (newUrl != null) {
+//                webView.loadUrl(newUrl);
+//            }
+        }
     }
 
     @Override
