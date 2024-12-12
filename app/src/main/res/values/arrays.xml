@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinner_mask_area">
+        <item>epc</item>
+        <item>tid</item>
+        <item>user</item>
+    </string-array>
+    <string-array name="spinner_inventory_mode">
+        <item>epc</item>
+        <item>epc+tid</item>
+        <item>epc+user</item>
+    </string-array>
+    <array name="bank">
+        <item>密码区</item>
+        <item>EPC</item>
+        <item>TID</item>
+        <item>USER</item>
+    </array>
+</resources>
