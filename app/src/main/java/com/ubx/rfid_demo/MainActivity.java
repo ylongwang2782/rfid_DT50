@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
         mDataParents = new ArrayList<>();
         tagScanSpinner = new ArrayList<>();
         initRfid();
+
+        // init 3 fragment in a tabs
         fragments = Arrays.asList(TagScanFragment.newInstance(MainActivity.this)
                 , TagManageFragment.newInstance(MainActivity.this)
                 , SettingFragment.newInstance(MainActivity.this));
@@ -83,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setOffscreenPageLimit(3);
         tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
+        // Jump to tab 1 when init done
+        viewPager.post(() -> viewPager.setCurrentItem(1));
 
         // Initialize WebView
         webView = findViewById(R.id.webview);
