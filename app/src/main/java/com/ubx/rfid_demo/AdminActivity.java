@@ -21,7 +21,7 @@ public class AdminActivity extends Activity {
         saveButton = findViewById(R.id.saveButton);
 
         SharedPreferences sharedPreferences = getSharedPreferences("WebViewPrefs", MODE_PRIVATE);
-        String defaultUrl = sharedPreferences.getString("defaultUrl", "http://192.168.0.2:8083/");
+        String defaultUrl = sharedPreferences.getString("defaultUrl", "http://192.168.0.103:8082/");
         urlEditText.setText(defaultUrl);
 
         saveButton.setOnClickListener(v -> {

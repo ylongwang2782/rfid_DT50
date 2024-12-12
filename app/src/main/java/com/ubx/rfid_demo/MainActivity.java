@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         webView.addJavascriptInterface(new WebAppInterface(this), "AndroidEpc");
 
         SharedPreferences sharedPreferences = getSharedPreferences("WebViewPrefs", MODE_PRIVATE);
-        String defaultUrl = sharedPreferences.getString("defaultUrl", "http://192.168.0.2:8082");
+        String defaultUrl = sharedPreferences.getString("defaultUrl", "http://192.168.0.103:8082");
 
         webView.loadUrl(defaultUrl); // Load your desired URL
         webView.setVisibility(View.INVISIBLE); // Make WebView visible
@@ -264,7 +264,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-
             case R.id.action_invisible:
                 webView.setVisibility(View.INVISIBLE);
                 return true;
