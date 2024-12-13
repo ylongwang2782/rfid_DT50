@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
         // Jump to tab 1 when init done
-        viewPager.post(() -> viewPager.setCurrentItem(1));
+        viewPager.post(() -> viewPager.setCurrentItem(0));
 
         // Initialize WebView
         webView = findViewById(R.id.webview);
@@ -112,13 +112,26 @@ public class MainActivity extends AppCompatActivity {
             mActivity = activity;
         }
 
-        /**
-         * get tagData single
-         */
         @JavascriptInterface
         public String getData() {
             Gson gson = new Gson();
             return gson.toJson(tagData); // Make sure tagData is properly populated
+        }
+
+        // Get epc json
+        @JavascriptInterface
+        public String startSpinnerInventory() {
+            TagScanFragment fragment = (TagScanFragment) fragments.get(0);
+            fragment.scanStartBtn.callOnClick();
+            if (tagData != null && !tagData.isEmpty()) {
+                // 获取第一个对象
+                TagScan firstTag = tagData.get(0);
+                Log.d(TAG, "tag get ok");
+                return firstTag.epc;
+            } else {
+                Log.d(TAG, "tag is null");
+                return null;
+            }
         }
 
         @JavascriptInterface
@@ -134,11 +147,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /*get tagData continuous*/
-    public void updateData(List<TagScan> newData) {
-        tagData = newData;
-    }
-
     public void onKeyDownHandler() {
         webView.loadUrl("javascript:onKeyDownHandler()");
     }
@@ -147,6 +155,10 @@ public class MainActivity extends AppCompatActivity {
         webView.loadUrl("javascript:onKeyUpHandler()");
     }
 
+    /*get tagData continuous*/
+    public void updateData(List<TagScan> newData) {
+        tagData = newData;
+    }
     public void updateScanStatus(boolean newScanStatus) {
         scanStatus = newScanStatus;
     }

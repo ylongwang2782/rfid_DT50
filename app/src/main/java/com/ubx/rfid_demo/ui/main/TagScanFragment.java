@@ -185,8 +185,8 @@ public class TagScanFragment extends Fragment {
 
             Log.v(TAG, "--- startInventory()   ----");
             handlerUpdateUI();
-//            inventorySingle();//读单个标签
-            mActivity.mRfidManager.startRead();//少量标签盘点建议使用：0；盘点标签超过 100-200建议使用：1.
+            inventorySingle();//读单个标签
+//            mActivity.mRfidManager.startRead();//少量标签盘点建议使用：0；盘点标签超过 100-200建议使用：1.
         } else {
             Log.v(TAG, "--- stopInventory()   ----");
             mActivity.mRfidManager.stopInventory();

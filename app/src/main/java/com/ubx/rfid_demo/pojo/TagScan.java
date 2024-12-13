@@ -5,7 +5,7 @@ import java.util.Objects;
 public class TagScan {
 
     private String rssi;
-    private String epc;
+    public String epc;
     private String tid;
     private int count;
 
