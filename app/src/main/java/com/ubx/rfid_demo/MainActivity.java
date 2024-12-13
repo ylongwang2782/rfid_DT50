@@ -112,11 +112,11 @@ public class MainActivity extends AppCompatActivity {
             mActivity = activity;
         }
 
-        @JavascriptInterface
-        public String getData() {
-            Gson gson = new Gson();
-            return gson.toJson(tagData); // Make sure tagData is properly populated
-        }
+//        @JavascriptInterface
+//        public String getData() {
+//            Gson gson = new Gson();
+//            return gson.toJson(tagData); // Make sure tagData is properly populated
+//        }
 
         // Get epc json
         @JavascriptInterface
@@ -135,15 +135,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @JavascriptInterface
-        public void h5SetQueryMode(int mode) {
-            mRfidManager.setQueryMode(mode);
+        public void clearFocus() {
+            webView.clearFocus();
         }
 
-        @JavascriptInterface
-        public void startScan() {
-            TagScanFragment fragment = (TagScanFragment) fragments.get(0);
-            fragment.scanStartBtn.callOnClick();
-        }
+//        @JavascriptInterface
+//        public void h5SetQueryMode(int mode) {
+//            mRfidManager.setQueryMode(mode);
+//        }
+//
+//        @JavascriptInterface
+//        public void startScan() {
+//            TagScanFragment fragment = (TagScanFragment) fragments.get(0);
+//            fragment.scanStartBtn.callOnClick();
+//        }
 
     }
 
