@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private List<TagScan> data; // Make sure this list is accessibl
+    private List<TagScan> tagData; // Make sure this list is accessibl
     private boolean scanStatus; // Make sure this list is accessibl
 
     public class WebAppInterface {
@@ -113,12 +113,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         /**
-         * get data single
+         * get tagData single
          */
         @JavascriptInterface
         public String getData() {
             Gson gson = new Gson();
-            return gson.toJson(data); // Make sure data is properly populated
+            return gson.toJson(tagData); // Make sure tagData is properly populated
         }
 
         @JavascriptInterface
@@ -134,16 +134,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /*get data continuous*/
+    /*get tagData continuous*/
     public void updateData(List<TagScan> newData) {
-        data = newData;
-        runOnUiThread(() -> {
-            Gson gson = new Gson();
-            String jsonData = gson.toJson(data);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                webView.evaluateJavascript("epcDataGet(" + jsonData + ");", null);
-            }
-        });
+        tagData = newData;
     }
 
     public void buttonClickListener() {
@@ -287,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // rewrite onActivityResult to recv data
+    // rewrite onActivityResult to recv
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Log.d("BackOndestory","onActivityResult");
