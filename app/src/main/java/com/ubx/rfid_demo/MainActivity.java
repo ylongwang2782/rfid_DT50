@@ -139,8 +139,12 @@ public class MainActivity extends AppCompatActivity {
         tagData = newData;
     }
 
-    public void buttonClickListener() {
-        webView.loadUrl("javascript:buttonClickHandler()");
+    public void onKeyDownHandler() {
+        webView.loadUrl("javascript:onKeyDownHandler()");
+    }
+
+    public void onKeyUpHandler() {
+        webView.loadUrl("javascript:onKeyUpHandler()");
     }
 
     public void updateScanStatus(boolean newScanStatus) {
@@ -304,8 +308,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getKeyCode() == 523 && event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
-            //TODO 按下 开启盘点
-            buttonClickListener();
+            onKeyDownHandler();
 
             if (viewPager.getCurrentItem() == 0) {
 //                TagScanFragment fragment = (TagScanFragment) fragments.get(0);
@@ -313,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         } else if (event.getKeyCode() == 523 && event.getAction() == KeyEvent.ACTION_UP && event.getRepeatCount() == 0) {
-            //TODO 抬起 停止盘点
+            onKeyUpHandler();
             return true;
         }
         return super.dispatchKeyEvent(event);
