@@ -165,7 +165,7 @@ public class TagScanFragment extends Fragment {
 
     }
 
-    private void setScanStatus(boolean isScan) {
+    public void setScanStatus(boolean isScan) {
 
         if (isScan) {
             tagTotal = 0;

@@ -112,43 +112,32 @@ public class MainActivity extends AppCompatActivity {
             mActivity = activity;
         }
 
-//        @JavascriptInterface
-//        public String getData() {
-//            Gson gson = new Gson();
-//            return gson.toJson(tagData); // Make sure tagData is properly populated
-//        }
-
         // Get epc json
         @JavascriptInterface
         public String startSpinnerInventory() {
             TagScanFragment fragment = (TagScanFragment) fragments.get(0);
-            fragment.scanStartBtn.callOnClick();
+            if (fragment.scanStartBtn != null && fragment.scanStartBtn.isEnabled()) {
+                fragment.setCallback();
+                fragment.setScanStatus(true);
+            }
             if (tagData != null && !tagData.isEmpty()) {
                 // 获取第一个对象
                 TagScan firstTag = tagData.get(0);
-                Log.d(TAG, "tag get ok");
-                return firstTag.epc;
+                Gson gson = new Gson();
+                // print firstTag.epc json
+                Log.d(TAG, "tag get ok json" + gson.toJson(firstTag.epc));
+                return gson.toJson(firstTag.epc);
             } else {
                 Log.d(TAG, "tag is null");
                 return null;
             }
+//            return null;
         }
 
         @JavascriptInterface
         public void clearFocus() {
             webView.clearFocus();
         }
-
-//        @JavascriptInterface
-//        public void h5SetQueryMode(int mode) {
-//            mRfidManager.setQueryMode(mode);
-//        }
-//
-//        @JavascriptInterface
-//        public void startScan() {
-//            TagScanFragment fragment = (TagScanFragment) fragments.get(0);
-//            fragment.scanStartBtn.callOnClick();
-//        }
 
     }
 
@@ -164,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
     public void updateData(List<TagScan> newData) {
         tagData = newData;
     }
+
     public void updateScanStatus(boolean newScanStatus) {
         scanStatus = newScanStatus;
     }
