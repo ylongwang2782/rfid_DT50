@@ -123,8 +123,14 @@ public class MainActivity extends AppCompatActivity {
             if (tagData != null && !tagData.isEmpty()) {
                 // 获取第一个对象
                 TagScan firstTag = tagData.get(0);
+
+                // 再次强制更新列表tvChoiceEpcTid
+                TagManageFragment TagManagementFragment = (TagManageFragment) fragments.get(1);
+                String epc = firstTag.getEpc().replace(" ", "");
+                TagManagementFragment.tvChoiceEpcTid.setText(epc);
+
+                // 返回EPC字符串
                 Gson gson = new Gson();
-                // print firstTag.epc json
                 Log.d(TAG, "tag get ok json" + gson.toJson(firstTag.epc));
                 return gson.toJson(firstTag.epc);
             } else {
@@ -132,6 +138,23 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
 //            return null;
+        }
+
+        @JavascriptInterface
+        public int htmlAccessInventory(int epcsPos, int memTypePos, int wordStartPos, int wordCount, String accessPWB,
+                                       String accessData) {
+            TagManageFragment fragment = (TagManageFragment) fragments.get(1);
+            // fill word start position
+            if (fragment.manageAddressEdit != null) {
+                fragment.manageAddressEdit.setText(String.valueOf(wordStartPos));
+            }
+            if (fragment.manageCntEdit != null) {
+                fragment.manageCntEdit.setText(String.valueOf(wordCount));
+            }
+            fragment.manageWriteEdit.setText(accessData);
+            fragment.manageWriteBtn.callOnClick();
+
+            return 0;
         }
 
         @JavascriptInterface

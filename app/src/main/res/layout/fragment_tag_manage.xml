@@ -97,7 +97,6 @@
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/manage_password_edit"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:focusable="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="00000000"
@@ -125,7 +124,6 @@
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/manage_address_edit"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:focusable="false"
                     android:layout_width="wrap_content"
                     android:digits="1234567890"
                     android:layout_height="wrap_content"
@@ -153,12 +151,11 @@
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/manage_cnt_edit"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:focusable="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:digits="1234567890"
                     android:inputType="number"
                     android:maxLength="3"
-                    android:digits="1234567890"
                     android:text="1" />
 
             </LinearLayout>
@@ -181,7 +178,6 @@
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/manage_write_edit"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:focusable="false"
                     android:layout_width="wrap_content"
                     android:digits="1234567890ABCDEFabcdef"
                     android:layout_height="wrap_content"

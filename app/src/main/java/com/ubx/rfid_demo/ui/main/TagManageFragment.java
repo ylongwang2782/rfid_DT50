@@ -54,9 +54,9 @@ public class TagManageFragment extends Fragment {
 
     private RecyclerView manageListRv;
     private Spinner manageBankSpinner,manageEpcDatasSpinner;
-    private TextView tvChoiceEpcTid;
-    private EditText manageWriteEdit,manageCntEdit,manageAddressEdit,managePasswordEdit;
-    private Button manageReadBtn,manageWriteBtn;
+    public TextView tvChoiceEpcTid;
+    public EditText manageWriteEdit,manageCntEdit,manageAddressEdit,managePasswordEdit;
+    public Button manageReadBtn,manageWriteBtn;
 
 
     /**
