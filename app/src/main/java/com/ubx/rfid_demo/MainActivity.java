@@ -95,10 +95,10 @@ public class MainActivity extends AppCompatActivity {
         webView.addJavascriptInterface(new WebAppInterface(this), "AndroidEpc");
 
         SharedPreferences sharedPreferences = getSharedPreferences("WebViewPrefs", MODE_PRIVATE);
-        String defaultUrl = sharedPreferences.getString("defaultUrl", "http://192.168.0.103:8082");
+        String defaultUrl = sharedPreferences.getString("defaultUrl", "http://192.168.0.101:8082");
 
         webView.loadUrl(defaultUrl); // Load your desired URL
-        webView.setVisibility(View.INVISIBLE); // Make WebView visible
+        webView.setVisibility(View.VISIBLE); // Make WebView visible
 
     }
 
