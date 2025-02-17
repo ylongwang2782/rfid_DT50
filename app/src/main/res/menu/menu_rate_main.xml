@@ -3,17 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.readerdemouhf.MainActivity" >
 
-    <item
-        android:id="@+id/action_invisible"
-        android:title="@string/web_invisible"
-        android:orderInCategory="100"
-        app:showAsAction="never"
-        />
-    <item
-        android:id="@+id/action_visible"
-        android:title="@string/web_visible"
-        android:orderInCategory="101"
-        app:showAsAction="never" />
+<!--    <item-->
+<!--        android:id="@+id/action_invisible"-->
+<!--        android:title="@string/web_invisible"-->
+<!--        android:orderInCategory="100"-->
+<!--        app:showAsAction="never"-->
+<!--        />-->
+<!--    <item-->
+<!--        android:id="@+id/action_visible"-->
+<!--        android:title="@string/web_visible"-->
+<!--        android:orderInCategory="101"-->
+<!--        app:showAsAction="never" />-->
     <item
         android:id="@+id/action_refresh"
         android:title="@string/web_refresh"

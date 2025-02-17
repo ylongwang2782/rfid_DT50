@@ -295,12 +295,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.action_invisible:
-                webView.setVisibility(View.INVISIBLE);
-                return true;
-            case R.id.action_visible:
-                webView.setVisibility(View.VISIBLE);
-                return true;
+//            case R.id.action_invisible:
+//                webView.setVisibility(View.INVISIBLE);
+//                return true;
+//            case R.id.action_visible:
+//                webView.setVisibility(View.VISIBLE);
+//                return true;
             case R.id.action_refresh:
                 if (webView != null) {
                     webView.reload(); // 刷新 WebView
