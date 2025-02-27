@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         // Initialize WebView
         webView = findViewById(R.id.webview);
         webView.setWebViewClient(new WebViewClient()); // Prevent opening links in external browser
+        webView.getSettings().setDomStorageEnabled(true); // Enable localStorage
         webView.getSettings().setJavaScriptEnabled(true); // Enable JavaScript
         webView.addJavascriptInterface(new WebAppInterface(this), "AndroidEpc");
 
@@ -99,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
 
         webView.loadUrl(defaultUrl); // Load your desired URL
         webView.setVisibility(View.VISIBLE); // Make WebView visible
+
+        String userAgent = webView.getSettings().getUserAgentString();
+        Log.d("WebViewUserAgent", userAgent);
 
     }
 
