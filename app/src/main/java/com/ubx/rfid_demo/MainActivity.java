@@ -168,6 +168,23 @@ public class MainActivity extends AppCompatActivity {
             webView.clearFocus();
         }
 
+        // 获取功率JS接口
+        @JavascriptInterface
+        public int getPower() {
+            return mRfidManager.getOutputPower();
+        }
+
+        // 设置功率JS接口
+        @JavascriptInterface
+        public int setPower(int power) {
+            if (power < 0 || power > 33) {
+                Log.d(TAG, getString(R.string.power_value_not_allow));
+                return -1;
+            }
+            mRfidManager.setOutputPower((byte) power);
+            return 0;
+        }
+
     }
 
     public void onKeyDownHandler() {
