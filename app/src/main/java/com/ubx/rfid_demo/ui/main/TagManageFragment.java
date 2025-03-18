@@ -58,6 +58,12 @@ public class TagManageFragment extends Fragment {
     public EditText manageWriteEdit,manageCntEdit,manageAddressEdit,managePasswordEdit;
     public Button manageReadBtn,manageWriteBtn;
 
+    private int writeTagStatus = 0;
+
+    // 提供公共方法
+    public int getWriteTagStatus() {
+        return writeTagStatus;
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -277,6 +283,7 @@ public class TagManageFragment extends Fragment {
                 int mem = manageBankSpinner.getSelectedItemPosition();
                 Log.e(TAG, "onClick: epc:" + s_epc + " mem:" + mem + " address:" + add + " data:" + data + "len:" + d.length / 2);
                 int i = mActivity.mRfidManager.writeTag(s_epc, pwd, (byte) mem, (byte) add, (byte) (d.length / 2), d);
+                writeTagStatus = i;
                 if (i == 0) {
                     toast("Data was written successfully");
                     SoundTool.getInstance(BaseApplication.getContext()).playBeep(1);

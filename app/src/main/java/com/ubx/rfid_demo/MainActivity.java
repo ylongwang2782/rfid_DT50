@@ -158,7 +158,9 @@ public class MainActivity extends AppCompatActivity {
             fragment.manageWriteEdit.setText(accessData);
             fragment.manageWriteBtn.callOnClick();
 
-            return 0;
+            int ret = fragment.getWriteTagStatus();
+
+            return ret;
         }
 
         @JavascriptInterface
