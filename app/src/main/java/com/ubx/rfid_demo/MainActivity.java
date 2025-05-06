@@ -141,7 +141,50 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "tag is null");
                 return null;
             }
-//            return null;
+        }
+
+        @JavascriptInterface
+        public int startContinuousInventory() {
+            TagScanFragment fragment = (TagScanFragment) fragments.get(0);
+            if (fragment.scanStartBtn != null && fragment.scanStartBtn.isEnabled()) {
+                fragment.setCallback();
+                fragment.setContinuousScanStatus(true);
+            }
+            return 0;
+        }
+
+        @JavascriptInterface
+        public int stopContinuousInventory() {
+            TagScanFragment fragment = (TagScanFragment) fragments.get(0);
+            if (fragment.scanStartBtn != null && fragment.scanStartBtn.isEnabled()) {
+                fragment.setContinuousScanStatus(false);
+            }
+            return 0;
+        }
+
+        @JavascriptInterface
+        public String getInventory() {
+            TagScanFragment fragment = (TagScanFragment) fragments.get(0);
+            if (tagData != null && !tagData.isEmpty()) {
+                // 更新管理界面的EPC显示（保持原有逻辑）
+                TagScan firstTag = tagData.get(0);
+                TagManageFragment TagManagementFragment = (TagManageFragment) fragments.get(1);
+                String epc = firstTag.getEpc().replace(" ", "");
+                TagManagementFragment.tvChoiceEpcTid.setText(epc);
+
+                // 打印整个tagData列表
+                for (TagScan tag : tagData) {
+                    Log.d(TAG, "tagData: " + tag.getEpc());
+                }
+
+                // 返回整个tagData列表的JSON，包含所有字段
+                Gson gson = new Gson();
+                Log.d(TAG, "All tags data: " + gson.toJson(tagData));
+                return gson.toJson(tagData);
+            } else {
+                Log.d(TAG, "tag is null");
+                return null;
+            }
         }
 
         @JavascriptInterface

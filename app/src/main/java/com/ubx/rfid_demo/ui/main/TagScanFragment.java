@@ -136,6 +136,7 @@ public class TagScanFragment extends Fragment {
 
     private final int MSG_UPDATE_UI = 0;
     private final int MSG_STOP_INVENTORY = 1;
+    private final int MSG_UPDATE_SINGLE_INV = 2;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -190,6 +191,37 @@ public class TagScanFragment extends Fragment {
         } else {
             Log.v(TAG, "--- stopInventory()   ----");
             mActivity.mRfidManager.stopInventory();
+            handlerStopUI();
+        }
+    }
+
+    public void setContinuousScanStatus(boolean isScan) {
+
+        if (isScan) {
+            tagTotal = 0;
+            if (mapData != null) {
+                mapData.clear();
+            }
+            if (mActivity.mDataParents != null) {
+                mActivity.mDataParents.clear();
+            }
+            if (mActivity.tagScanSpinner != null) {
+                mActivity.tagScanSpinner.clear();
+            }
+            if (data != null) {
+                data.clear();
+                scanListAdapterRv.setData(data);
+            }
+
+            Log.v(TAG, "--- startInventory()   ----");
+            handlerUpdateUI();
+//            inventorySingle();//读单个标签
+
+            mActivity.mRfidManager.startRead();//少量标签盘点建议使用：0；盘点标签超过 100-200建议使用：1.
+        } else {
+            Log.v(TAG, "--- stopInventory()   ----");
+            mActivity.mRfidManager.stopInventory();
+
             handlerStopUI();
         }
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">RFID_PDA_v1.2</string>
+    <string name="app_name">RFID_PDA_v1.3</string>
     <string name="tab_text_1">标签扫描</string>
     <string name="tab_text_2">标签管理</string>
     <string name="tab_text_3">设置</string>

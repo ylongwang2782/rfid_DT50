@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">RFID_PDA_v1.0</string>
+    <string name="app_name">RFID_PDA_v1.3</string>
     <string name="tab_text_1">tag scan</string>
     <string name="tab_text_2">tag manage</string>
     <string name="tab_text_3">setting</string>
