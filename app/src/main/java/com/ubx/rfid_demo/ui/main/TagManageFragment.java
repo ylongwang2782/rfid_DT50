@@ -279,16 +279,32 @@ public class TagManageFragment extends Fragment {
                         data = data + "0";
                     }
                 }
-                byte[] d = hexStringToBytes(data);
+                
                 int mem = manageBankSpinner.getSelectedItemPosition();
-                Log.e(TAG, "onClick: epc:" + s_epc + " mem:" + mem + " address:" + add + " data:" + data + "len:" + d.length / 2);
-                int i = mActivity.mRfidManager.writeTag(s_epc, pwd, (byte) mem, (byte) add, (byte) (d.length / 2), d);
-                writeTagStatus = i;
-                if (i == 0) {
-                    toast("Data was written successfully");
-                    SoundTool.getInstance(BaseApplication.getContext()).playBeep(1);
+                
+                // 检查是否写入EPC区域 (mem == 1)
+                if (mem == 1) {
+                    // 写入EPC区域时，需要同时更新PC字段
+                    boolean success = writeEpcWithPcUpdate(s_epc, pwd, add, data);
+                    writeTagStatus = success ? 0 : -1;
+                    if (success) {
+                        toast("EPC data and PC field updated successfully");
+                        SoundTool.getInstance(BaseApplication.getContext()).playBeep(1);
+                    } else {
+                        toast("EPC data write failed");
+                    }
                 } else {
-                    toast("Data write failed " + i);
+                    // 写入其他区域，使用原有逻辑
+                    byte[] d = hexStringToBytes(data);
+                    Log.e(TAG, "onClick: epc:" + s_epc + " mem:" + mem + " address:" + add + " data:" + data + "len:" + d.length / 2);
+                    int i = mActivity.mRfidManager.writeTag(s_epc, pwd, (byte) mem, (byte) add, (byte) (d.length / 2), d);
+                    writeTagStatus = i;
+                    if (i == 0) {
+                        toast("Data was written successfully");
+                        SoundTool.getInstance(BaseApplication.getContext()).playBeep(1);
+                    } else {
+                        toast("Data write failed " + i);
+                    }
                 }
             }
         });
@@ -346,17 +362,134 @@ public class TagManageFragment extends Fragment {
      */
     private String getPC(String epc){
         String pc ="0000";
+        // EPC长度以字(word)为单位，每个字是2字节(4个十六进制字符)
         int len = epc.length()/4;
+        // PC字段的EPC长度信息在bit[15:11]，需要左移11位
         int b = len << 11;
-        String aHex = Integer.toHexString(b);
-        if (aHex.length() == 3){
-            pc = "0"+aHex;
-        } else {
-            pc = aHex;
+        String aHex = Integer.toHexString(b).toUpperCase();
+        
+        // 确保PC值是4位十六进制数
+        while (aHex.length() < 4) {
+            aHex = "0" + aHex;
         }
-        return pc;
+        
+        Log.d(TAG, "getPC: epc=" + epc + ", epcLen=" + len + " words, pc=" + aHex);
+        return aHex;
     }
 
+    /**
+     * 写入EPC数据并同时更新PC字段
+     * @param originalEpc 原始EPC
+     * @param pwd 访问密码
+     * @param startAddress 写入起始地址
+     * @param newEpcData 新的EPC数据
+     * @return 写入是否成功
+     */
+    private boolean writeEpcWithPcUpdate(String originalEpc, byte[] pwd, int startAddress, String newEpcData) {
+        try {
+            Log.d(TAG, "writeEpcWithPcUpdate: originalEpc=" + originalEpc + ", startAddress=" + startAddress + ", newEpcData=" + newEpcData);
+            
+            // 对于地址0或1的写入，使用专门的EPC写入方法
+            if (startAddress == 0 || startAddress == 1) {
+                // 使用RfidManager的writeEpcString方法，该方法会自动处理PC字段
+                String passwordStr = bytesToHexString(pwd);
+                Log.d(TAG, "writeEpcWithPcUpdate: using writeEpcString with password=" + passwordStr);
+                
+                int result = mActivity.mRfidManager.writeEpcString(newEpcData, passwordStr);
+                
+                if (result == 0) {
+                    Log.d(TAG, "writeEpcWithPcUpdate: writeEpcString successful");
+                    return true;
+                } else {
+                    Log.e(TAG, "writeEpcWithPcUpdate: writeEpcString failed with result=" + result);
+                    
+                    // 如果writeEpcString失败，尝试手动分步写入
+                    Log.d(TAG, "writeEpcWithPcUpdate: trying manual PC+EPC write");
+                    return writeEpcManually(originalEpc, pwd, newEpcData);
+                }
+            } else {
+                // 其他地址的写入，使用原有逻辑
+                byte[] dataBytes = hexStringToBytes(newEpcData);
+                int result = mActivity.mRfidManager.writeTag(originalEpc, pwd, (byte) 1, (byte) startAddress, (byte) (dataBytes.length / 2), dataBytes);
+                
+                if (result == 0) {
+                    Log.d(TAG, "writeEpcWithPcUpdate: standard write successful");
+                } else {
+                    Log.e(TAG, "writeEpcWithPcUpdate: standard write failed with result=" + result);
+                }
+                
+                return result == 0;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "writeEpcWithPcUpdate error: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * 手动写入PC字段和EPC数据
+     * @param originalEpc 原始EPC
+     * @param pwd 访问密码
+     * @param newEpcData 新的EPC数据
+     * @return 写入是否成功
+     */
+    private boolean writeEpcManually(String originalEpc, byte[] pwd, String newEpcData) {
+        try {
+            Log.d(TAG, "writeEpcManually: attempting manual PC+EPC write");
+            
+            // 第一步：计算并写入新的PC值
+            String newPc = getPC(newEpcData);
+            Log.d(TAG, "writeEpcManually: calculated newPc=" + newPc);
+            
+            // 写入PC字段到地址0
+            byte[] pcBytes = hexStringToBytes(newPc);
+            int pcResult = mActivity.mRfidManager.writeTag(originalEpc, pwd, (byte) 1, (byte) 0, (byte) 1, pcBytes);
+            
+            if (pcResult != 0) {
+                Log.e(TAG, "writeEpcManually: PC write failed with result=" + pcResult);
+                return false;
+            }
+            
+            Log.d(TAG, "writeEpcManually: PC write successful");
+            
+            // 第二步：写入EPC数据到地址1
+            String paddedEpcData = newEpcData;
+            if (paddedEpcData.length() % 4 != 0) {
+                int less = paddedEpcData.length() % 4;
+                for (int i = 0; i < 4 - less; i++) {
+                    paddedEpcData = paddedEpcData + "0";
+                }
+            }
+            
+            byte[] epcBytes = hexStringToBytes(paddedEpcData);
+            int epcResult = mActivity.mRfidManager.writeTag(originalEpc, pwd, (byte) 1, (byte) 1, (byte) (epcBytes.length / 2), epcBytes);
+            
+            if (epcResult != 0) {
+                Log.e(TAG, "writeEpcManually: EPC write failed with result=" + epcResult);
+                return false;
+            }
+            
+            Log.d(TAG, "writeEpcManually: EPC write successful");
+            return true;
+            
+        } catch (Exception e) {
+            Log.e(TAG, "writeEpcManually error: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * 将字节数组转换为十六进制字符串
+     * @param bytes 字节数组
+     * @return 十六进制字符串
+     */
+    private String bytesToHexString(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02X", b));
+        }
+        return sb.toString();
+    }
 
     /**
      * 将Hex String转换为Byte数组
